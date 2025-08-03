@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 project(Emerald)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 set(CMAKE_CXX_STANDARD 20)
 
 include(FetchContent)
