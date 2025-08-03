@@ -14,6 +14,7 @@ FetchContent_MakeAvailable(glfw)
 FetchContent_MakeAvailable(glm)
 
 add_executable(Emerald
+    Assertion.hpp
     main.cpp
 )
 
