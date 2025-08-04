@@ -19,6 +19,8 @@ FetchContent_MakeAvailable(glm)
 
 add_executable(Emerald
     Assertion.hpp
+    Gfx.hpp
+    Gfx.cpp
     main.cpp
 )
 
