@@ -119,6 +119,11 @@ namespace Emerald
         return shaderProgram;
     }
 
+    void Gfx::destroyShader(ShaderType shader)
+    {
+        glDeleteShader(shader);
+    }
+
     void Gfx::swap()
     {
         glfwSwapBuffers(g_window);
