@@ -2,7 +2,10 @@
 #include "glad/glad.h"
 #include "Assertion.hpp"
 #include "GLFW/glfw3.h"
+#include "fmt/format.h"
 #include <GL/gl.h>
+#include <GL/glext.h>
+#include <cstdint>
 #include <stdexcept>
 
 namespace
@@ -66,6 +69,54 @@ namespace Emerald
     float Gfx::deltaTime()
     {
         return g_deltaTime;
+    }
+
+    Gfx::ShaderType Gfx::compileShader(std::string_view source, ShaderKind kind)
+    {
+        Gfx::ShaderType shader {};
+
+        switch (kind)
+        {
+            case Gfx::ShaderKind::VERTEX:
+                shader = glCreateShader(GL_VERTEX_SHADER);
+                break;
+            case Gfx::ShaderKind::FRAGMENT:
+                shader = glCreateShader(GL_FRAGMENT_SHADER);
+                break;
+            default:
+                EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Unexpected ShaderKind {:#x}", static_cast<uint32_t>(kind)));
+        }
+
+        int32_t success;
+        char info[512];
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if(!success)
+        {
+            glGetShaderInfoLog(shader, std::size(info), nullptr, info);
+            EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Failed to compile shader: {}", info));
+        }
+
+        return shader;
+    }
+
+    Gfx::ShaderType Gfx::linkShaderProgram(ShaderType vertex, ShaderType fragment)
+    {
+        Gfx::ShaderType shaderProgram = glCreateProgram();
+
+        glAttachShader(shaderProgram, vertex);
+        glAttachShader(shaderProgram, fragment);
+        glLinkProgram(shaderProgram);
+
+        int32_t success;
+        char info[512];
+        glGetShaderiv(shaderProgram, GL_LINK_STATUS, &success);
+        if(!success)
+        {
+            glGetShaderInfoLog(shaderProgram, std::size(info), nullptr, info);
+            EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Failed to link shader: {}", shaderProgram));
+        }
+
+        return shaderProgram;
     }
 
     void Gfx::swap()
