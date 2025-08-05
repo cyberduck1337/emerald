@@ -39,6 +39,12 @@ namespace Emerald
 
     void Gfx::beginFrame()
     {
+        static float g_lastFrameTime {};
+
+        float currentTime = glfwGetTime();
+        g_deltaTime = currentTime - g_lastFrameTime;
+        g_lastFrameTime = currentTime;
+        
         clearBackgroud();
     }
 
@@ -55,6 +61,11 @@ namespace Emerald
     void Gfx::clearBackgroud()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    float Gfx::deltaTime()
+    {
+        return g_deltaTime;
     }
 
     void Gfx::swap()
