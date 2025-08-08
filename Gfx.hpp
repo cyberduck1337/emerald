@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string_view>
 
+#include "glm/ext/vector_float3.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
@@ -40,6 +41,12 @@ namespace Emerald
             void rotate(const glm::vec3& eulerAngles);
 
             glm::mat4 model() const;
+        };
+
+        struct Vertex
+        {
+            glm::vec3 position;
+            glm::vec2 uv;
         };
 
         using ShaderType = uint32_t;
