@@ -18,6 +18,36 @@ namespace
 
 namespace Emerald
 {
+    constexpr auto SOLID_COLOR_VERTEX_SHADER = R"(
+        #version 460 core
+
+        layout (location = 0) in vec3 inPos;
+
+        uniform mat4 model;
+        uniform mat4 view;
+        uniform mat4 projection;
+
+        out vec4 outPos;
+
+        void main()
+        {
+            outPos = projection * view * model * vec4(inPos, 1.0);
+        }
+    )";
+
+    constexpr auto SOLID_COLOR_FRAGMENT_SHADER = R"(
+        #version 460 core
+
+        layout (location = 0) in vec3 inColor;
+
+        out vec4 FragColor;
+
+        void main()
+        {
+            FragColor = vec4(inColor, 1.0);
+        }
+    )";
+
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)
     {
         EMERALD_VERIFY_THROW(glfwInit() == GLFW_TRUE, std::runtime_error, "Failed to inistalize GLFW");
@@ -117,6 +147,11 @@ namespace Emerald
         }
 
         return shaderProgram;
+    }
+
+    Gfx::ShaderType Gfx::fallbackShader()
+    {
+        return g_fallbackShader;       
     }
 
     void Gfx::destroyShader(ShaderType shader)

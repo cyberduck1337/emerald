@@ -34,6 +34,7 @@ namespace Emerald
         static float deltaTime();
         static ShaderType compileShader(std::string_view source, ShaderKind kind);
         static ShaderType linkShaderProgram(ShaderType vertex, ShaderType fragment);
+        static ShaderType fallbackShader();
         static void destroyShader(ShaderType shader);
         static void swap();
         static void endFrame();
@@ -42,5 +43,6 @@ namespace Emerald
     private:
         static inline WindowType g_window { nullptr }; 
         static inline float g_deltaTime {};
+        static inline ShaderType g_fallbackShader {};
     };
 }
