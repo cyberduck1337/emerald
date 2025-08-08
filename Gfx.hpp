@@ -5,6 +5,10 @@
 #include <cstdint>
 #include <string_view>
 
+#include "glm/gtx/matrix_decompose.hpp"
+#include "glm/gtx/quaternion.hpp"
+#include "glm/gtx/euler_angles.hpp"
+
 namespace
 {
     using WindowType = struct GLFWwindow*;
@@ -17,6 +21,26 @@ namespace Emerald
     public:
         Gfx() = delete;
         ~Gfx() = delete;
+
+        struct Transform
+        {
+            static constexpr glm::vec3 VECTOR_UP = { 0.0f, 1.0f, 0.0f };
+            static constexpr glm::vec3 VECTOR_FRONT = { 0.0f, 0.0f, -1.0f };
+
+            glm::vec3 position;
+            glm::quat rotation;
+            glm::vec3 scale;
+
+            glm::vec3 eulerAngles() const;
+            glm::vec3 direction() const;
+            glm::vec3 front() const;
+            glm::vec3 right() const;
+            glm::vec3 up() const;
+
+            void rotate(const glm::vec3& eulerAngles);
+
+            glm::mat4 model() const;
+        };
 
         using ShaderType = uint32_t;
 
