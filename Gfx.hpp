@@ -25,6 +25,9 @@ namespace Emerald
         Gfx() = delete;
         ~Gfx() = delete;
 
+        using VertexBufferObjectType = uint32_t;
+        using VertexArrayObjectType = uint32_t;
+
         struct Transform
         {
             static constexpr glm::vec3 VECTOR_UP = { 0.0f, 1.0f, 0.0f };
@@ -111,6 +114,8 @@ namespace Emerald
         static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, float value);
         static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, const glm::mat4& value);
         static void destroyShader(ShaderType shader);
+        static VertexBufferObjectType createVertexBufferObject();
+        static VertexArrayObjectType createVertexArrayObject();
         static void swap();
         static void endFrame();
         static void destroy();

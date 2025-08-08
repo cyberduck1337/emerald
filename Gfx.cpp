@@ -250,6 +250,22 @@ namespace Emerald
         glDeleteShader(shader);
     }
 
+    Gfx::VertexBufferObjectType Gfx::createVertexBufferObject()
+    {
+        Gfx::VertexBufferObjectType vertexBufferObject{};
+        glGenBuffers(1, &vertexBufferObject);
+
+        return vertexBufferObject;
+    }
+
+    Gfx::VertexArrayObjectType Gfx::createVertexArrayObject()
+    {
+        Gfx::VertexArrayObjectType vertexArrayObject{};
+        glGenVertexArrays(1, &vertexArrayObject);
+
+        return vertexArrayObject;
+    }
+
     void Gfx::swap()
     {
         glfwSwapBuffers(g_window);
