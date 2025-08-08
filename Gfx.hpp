@@ -75,6 +75,27 @@ namespace Emerald
             FRAGMENT
         };
 
+        struct Attribute
+        {
+            enum class Type : uint32_t
+            {
+                BYTE,
+                UNSIGNED_BYTE,
+                SHORT,
+                UNSIGNED_SHORT,
+                INTEGER,
+                UNSIGNED_INTEGER,
+                FLOAT
+            };
+
+            uint32_t index;
+            uint32_t numComponents;
+            size_t stride;
+            Type type;
+            uintptr_t offset;
+            bool aligned;
+        };
+
         static void initialize(const std::string& title, uint32_t width, uint32_t height);
         static void beginFrame();
         static bool windowShouldClose();
