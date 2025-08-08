@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "glm/ext/vector_float3.hpp"
+#include "glm/ext/vector_uint2.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
@@ -60,6 +61,7 @@ namespace Emerald
         static void initialize(const std::string& title, uint32_t width, uint32_t height);
         static void beginFrame();
         static bool windowShouldClose();
+        static glm::uvec2 getWindowSize();
         static void setClearColor(float r, float g, float b, float a);
         static void clearBackgroud();
         static float deltaTime();

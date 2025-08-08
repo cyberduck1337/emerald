@@ -132,6 +132,15 @@ namespace Emerald
         return glfwWindowShouldClose(g_window);
     }
 
+    glm::uvec2 Gfx::getWindowSize()
+    {
+        int32_t w{};
+        int32_t h{};
+        glfwGetWindowSize(g_window, &w, &h);
+
+        return {w, h};
+    }
+
     void Gfx::setClearColor(float r, float g, float b, float a)
     {
         glClearColor(r, g, b, a);
