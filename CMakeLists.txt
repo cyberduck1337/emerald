@@ -35,3 +35,7 @@ target_link_libraries(Emerald PUBLIC
     glm
     spdlog::spdlog
 )
+
+target_compile_definitions(Emerald PUBLIC
+    GLM_ENABLE_EXPERIMENTAL
+)
