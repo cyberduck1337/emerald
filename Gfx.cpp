@@ -96,10 +96,27 @@ namespace Emerald
 
     void Gfx::Camera::update()
     {
-        glm::uvec2 windowSize = Gfx::getWindowSize();
-        
+        const glm::uvec2 windowSize = Gfx::getWindowSize();
+
         m_projection = glm::perspective(glm::radians(m_fov), static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), m_near, m_far);
         m_view = glm::lookAt(m_transform.position, m_transform.position + m_transform.front(), m_transform.up());
+    }
+
+    Gfx::Mesh::Mesh(const std::vector<Gfx::Vertex>& vertices, const std::vector<std::array<uint32_t, 3>>& triangles) : m_vertices(vertices), m_triangles(triangles), m_vertexBufferObject(createVertexBufferObject()), m_vertexArrayObject(createVertexArrayObject())
+    {
+    }
+
+    Gfx::Mesh::Mesh(std::vector<Gfx::Vertex>&& vertices, std::vector<std::array<uint32_t, 3>>&& triangles) :  m_vertices(std::move(vertices)), m_triangles(std::move(triangles)), m_vertexBufferObject(createVertexBufferObject()), m_vertexArrayObject(createVertexArrayObject())
+    {
+    }
+
+    Gfx::Mesh::~Mesh()
+    {
+        destroyVertexArrayObject(m_vertexArrayObject);
+        destroyVertexBufferObject(m_vertexBufferObject);
+
+        m_vertices.clear();
+        m_triangles.clear();
     }
 
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)

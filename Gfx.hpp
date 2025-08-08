@@ -1,9 +1,11 @@
 #pragma  once
 
+#include <array>
 #include <cstdint>
 #include <string>
 #include <cstdint>
 #include <string_view>
+#include <vector>
 
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_float3.hpp"
@@ -53,6 +55,21 @@ namespace Emerald
         {
             glm::vec3 position;
             glm::vec2 uv;
+        };
+
+        class Mesh
+        {
+        public:
+            Mesh(const std::vector<Gfx::Vertex>& vertices, const std::vector<std::array<uint32_t, 3>>& triangles);
+            Mesh(std::vector<Gfx::Vertex>&& vertices, std::vector<std::array<uint32_t, 3>>&& triangles);
+            ~Mesh();
+
+        protected:
+            std::vector<Gfx::Vertex> m_vertices;
+            std::vector<std::array<uint32_t, 3>> m_triangles;
+
+            VertexBufferObjectType m_vertexBufferObject;
+            VertexArrayObjectType m_vertexArrayObject;
         };
 
         class Camera
