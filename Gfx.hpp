@@ -105,6 +105,8 @@ namespace Emerald
         static void setClearColor(float r, float g, float b, float a);
         static void clearBackgroud();
         static float deltaTime();
+        static Camera& getMainCamera();
+        static void setMainCamera(const Camera& camera);
         static ShaderType compileShader(std::string_view source, ShaderKind kind);
         static ShaderType linkShaderProgram(ShaderType vertex, ShaderType fragment);
         static ShaderType fallbackShader();
@@ -123,5 +125,6 @@ namespace Emerald
         static inline WindowType g_window { nullptr }; 
         static inline float g_deltaTime {};
         static inline ShaderType g_fallbackShader {};
+        static inline Camera g_mainCamera {45.0f, 0.1f, 100.0f};
     };
 }
