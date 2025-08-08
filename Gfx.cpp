@@ -3,6 +3,9 @@
 #include "Assertion.hpp"
 #include "GLFW/glfw3.h"
 #include "fmt/format.h"
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_uint2.hpp"
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <cstdint>
@@ -88,6 +91,14 @@ namespace Emerald
     glm::mat4 Gfx::Transform::model() const
     {
         return (glm::translate(position) * glm::toMat4(rotation) * glm::scale(scale));
+    }
+
+    void Gfx::Camera::update()
+    {
+        glm::uvec2 windowSize = Gfx::getWindowSize();
+        
+        m_projection = glm::perspective(glm::radians(m_fov), static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), m_near, m_far);
+        m_view = glm::lookAt(m_transform.position, m_transform.position + m_transform.front(), m_transform.up());
     }
 
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)

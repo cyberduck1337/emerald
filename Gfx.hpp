@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string_view>
 
+#include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/ext/vector_uint2.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
@@ -48,6 +49,22 @@ namespace Emerald
         {
             glm::vec3 position;
             glm::vec2 uv;
+        };
+
+        class Camera
+        {
+        public:
+            Camera(float fov, float near, float far);
+            void update();
+
+        public:
+            float m_fov;
+            float m_near;
+            float m_far;
+
+            glm::mat4 m_view;
+            glm::mat4 m_projection;
+            Transform m_transform;
         };
 
         using ShaderType = uint32_t;
