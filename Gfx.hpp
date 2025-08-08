@@ -106,6 +106,10 @@ namespace Emerald
         static ShaderType compileShader(std::string_view source, ShaderKind kind);
         static ShaderType linkShaderProgram(ShaderType vertex, ShaderType fragment);
         static ShaderType fallbackShader();
+        static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, bool value);
+        static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, int32_t value);
+        static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, float value);
+        static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, const glm::mat4& value);
         static void destroyShader(ShaderType shader);
         static void swap();
         static void endFrame();

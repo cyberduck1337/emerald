@@ -6,6 +6,7 @@
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_uint2.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <cstdint>
@@ -222,6 +223,26 @@ namespace Emerald
     Gfx::ShaderType Gfx::fallbackShader()
     {
         return g_fallbackShader;       
+    }
+
+    void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, bool value)
+    {
+        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), static_cast<uint32_t>(value));
+    }
+
+    void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, int32_t value)
+    {
+        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
+    }
+
+    void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, float value)
+    {
+        glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()), value);
+    }
+
+    void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, const glm::mat4& value)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
     }
 
     void Gfx::destroyShader(ShaderType shader)
