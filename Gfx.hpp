@@ -116,7 +116,9 @@ namespace Emerald
         static void setShaderUniformValue(ShaderType shaderProgram, const std::string& name, const glm::mat4& value);
         static void destroyShader(ShaderType shader);
         static VertexBufferObjectType createVertexBufferObject();
+        static void destroyVertexBufferObject(VertexBufferObjectType vertexBufferObject);
         static VertexArrayObjectType createVertexArrayObject();
+        static void destroyVertexArrayObject(VertexArrayObjectType vertexArrayObject);
         static void swap();
         static void endFrame();
         static void destroy();

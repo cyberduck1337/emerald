@@ -168,6 +168,16 @@ namespace Emerald
         return g_deltaTime;
     }
 
+    Gfx::Camera& Gfx::getMainCamera()
+    {
+        return g_mainCamera;
+    }
+
+    void Gfx::setMainCamera(const Camera& camera)
+    {
+        g_mainCamera = camera;
+    }
+
     Gfx::ShaderType Gfx::compileShader(std::string_view source, ShaderKind kind)
     {
         Gfx::ShaderType shader {};
@@ -258,12 +268,22 @@ namespace Emerald
         return vertexBufferObject;
     }
 
+    void Gfx::destroyVertexBufferObject(VertexBufferObjectType vertexBufferObject)
+    {
+        glDeleteBuffers(1, &vertexBufferObject);
+    }
+
     Gfx::VertexArrayObjectType Gfx::createVertexArrayObject()
     {
         Gfx::VertexArrayObjectType vertexArrayObject{};
         glGenVertexArrays(1, &vertexArrayObject);
 
         return vertexArrayObject;
+    }
+
+    void Gfx::destroyVertexArrayObject(VertexArrayObjectType vertexArrayObject)
+    {
+        glDeleteVertexArrays(1, &vertexArrayObject);
     }
 
     void Gfx::swap()
