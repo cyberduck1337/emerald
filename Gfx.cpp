@@ -68,6 +68,10 @@ namespace Emerald
 
         glFrontFace(GL_CCW);
         glEnable(GL_CULL_FACE);
+
+        ShaderType fallbackVertexShader = compileShader(SOLID_COLOR_VERTEX_SHADER, ShaderKind::VERTEX);
+        ShaderType fallbackFragmentShader = compileShader(SOLID_COLOR_FRAGMENT_SHADER, ShaderKind::FRAGMENT);
+        g_fallbackShader = linkShaderProgram(fallbackVertexShader, fallbackFragmentShader);
     }
 
     void Gfx::beginFrame()
@@ -116,6 +120,10 @@ namespace Emerald
             default:
                 EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Unexpected ShaderKind {:#x}", static_cast<uint32_t>(kind)));
         }
+        
+        const char* shaderSourcePtr = source.data();
+        glShaderSource(shader, 1, &shaderSourcePtr, nullptr);
+        glCompileShader(shader);
 
         int32_t success;
         char info[512];
