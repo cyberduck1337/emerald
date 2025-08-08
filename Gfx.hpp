@@ -25,6 +25,7 @@ namespace Emerald
         Gfx() = delete;
         ~Gfx() = delete;
 
+        using ShaderType = uint32_t;
         using VertexBufferObjectType = uint32_t;
         using VertexArrayObjectType = uint32_t;
 
@@ -69,8 +70,6 @@ namespace Emerald
             glm::mat4 m_projection;
             Transform m_transform;
         };
-
-        using ShaderType = uint32_t;
 
         enum class ShaderKind : uint32_t
         {
