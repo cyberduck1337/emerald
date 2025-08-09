@@ -25,7 +25,6 @@ public:
         auto view = registry.view<Emerald::Gfx::Transform, Emerald::Gfx::Camera, const FreeCameraComponent>();
         for(auto&& [entity, transform, camera, freeCameraComponent] : view.each())
         {
-            Emerald::Log::debug("position: {} {} {}", transform.position.x, transform.position.y, transform.position.z);
             if(Emerald::Input::getKeyDown(Emerald::Input::KeyCode::W))
             {
                 transform.position += freeCameraComponent.m_speed * Emerald::Gfx::deltaTime() * transform.front();
