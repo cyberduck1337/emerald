@@ -21,6 +21,8 @@ FetchContent_MakeAvailable(spdlog)
 
 add_executable(Emerald
     Assertion.hpp
+    Input.hpp
+    Input.cpp
     Gfx.hpp
     Gfx.cpp
     Log.hpp
