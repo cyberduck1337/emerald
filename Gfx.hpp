@@ -15,10 +15,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
 
-namespace
-{
-    using WindowType = struct GLFWwindow*;
-}
+using WindowType = struct GLFWwindow*;
 
 namespace Emerald
 {
