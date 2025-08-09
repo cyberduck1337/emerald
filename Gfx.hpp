@@ -7,6 +7,7 @@
 #include <string_view>
 #include <vector>
 
+#include "Input.hpp"
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/ext/vector_uint2.hpp"
@@ -23,6 +24,8 @@ namespace Emerald
 {
     class Gfx final
     {
+        friend class Input;
+
     public:
         Gfx() = delete;
         ~Gfx() = delete;
