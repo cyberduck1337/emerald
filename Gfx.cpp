@@ -121,7 +121,6 @@ namespace Emerald
 
     Gfx::Camera::Camera(float fov, float near, float far) : m_fov(fov), m_near(near), m_far(far)
     {
-        update();
     }
 
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)
