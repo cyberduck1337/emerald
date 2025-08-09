@@ -4,7 +4,6 @@
 #include "GLFW/glfw3.h"
 #include "fmt/format.h"
 #include "glm/ext/matrix_float4x4.hpp"
-#include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_uint2.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <GL/gl.h>
@@ -94,14 +93,6 @@ namespace Emerald
         return (glm::translate(position) * glm::toMat4(rotation) * glm::scale(scale));
     }
 
-    void Gfx::Camera::update()
-    {
-        const glm::uvec2 windowSize = Gfx::getWindowSize();
-
-        m_projection = glm::perspective(glm::radians(m_fov), static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), m_near, m_far);
-        m_view = glm::lookAt(m_transform.position, m_transform.position + m_transform.front(), m_transform.up());
-    }
-
     Gfx::Mesh::Mesh(const std::vector<Gfx::Vertex>& vertices, const std::vector<std::array<uint32_t, 3>>& triangles) : m_vertices(vertices), m_triangles(triangles), m_vertexBufferObject(createVertexBufferObject()), m_vertexArrayObject(createVertexArrayObject())
     {
     }
@@ -158,7 +149,6 @@ namespace Emerald
         g_lastFrameTime = currentTime;
         
         clearBackgroud();
-        g_mainCamera.update();
     }
 
     bool Gfx::windowShouldClose()
@@ -188,16 +178,6 @@ namespace Emerald
     float Gfx::deltaTime()
     {
         return g_deltaTime;
-    }
-
-    Gfx::Camera& Gfx::getMainCamera()
-    {
-        return g_mainCamera;
-    }
-
-    void Gfx::setMainCamera(const Camera& camera)
-    {
-        g_mainCamera = camera;
     }
 
     Gfx::ShaderType Gfx::compileShader(std::string_view source, ShaderKind kind)

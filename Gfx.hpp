@@ -79,7 +79,6 @@ namespace Emerald
         {
         public:
             Camera(float fov, float near, float far);
-            void update();
 
         public:
             float m_fov;
@@ -88,7 +87,6 @@ namespace Emerald
 
             glm::mat4 m_view;
             glm::mat4 m_projection;
-            Transform m_transform;
         };
 
         enum class ShaderKind : uint32_t
@@ -147,6 +145,5 @@ namespace Emerald
         static inline WindowType g_window { nullptr }; 
         static inline float g_deltaTime {};
         static inline ShaderType g_fallbackShader {};
-        static inline Camera g_mainCamera {45.0f, 0.1f, 100.0f};
     };
 }
