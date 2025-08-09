@@ -23,6 +23,8 @@ FetchContent_MakeAvailable(spdlog)
 
 add_executable(Emerald
     Assertion.hpp
+    Game.hpp
+    Game.cpp
     Input.hpp
     Input.cpp
     Gfx.hpp
