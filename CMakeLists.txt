@@ -30,6 +30,7 @@ add_executable(Emerald
     Log.hpp
     Log.cpp
     main.cpp
+    System.hpp
 )
 
 target_link_libraries(Emerald PUBLIC
