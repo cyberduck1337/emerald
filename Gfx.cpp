@@ -119,6 +119,11 @@ namespace Emerald
         m_triangles.clear();
     }
 
+    Gfx::Camera::Camera(float fov, float near, float far) : m_fov(fov), m_near(near), m_far(far)
+    {
+        update();
+    }
+
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)
     {
         EMERALD_VERIFY_THROW(glfwInit() == GLFW_TRUE, std::runtime_error, "Failed to inistalize GLFW");
@@ -154,6 +159,7 @@ namespace Emerald
         g_lastFrameTime = currentTime;
         
         clearBackgroud();
+        g_mainCamera.update();
     }
 
     bool Gfx::windowShouldClose()
