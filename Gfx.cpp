@@ -7,7 +7,6 @@
 #include "glm/ext/vector_uint2.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <GL/gl.h>
-#include <GL/glext.h>
 #include <cstdint>
 #include <stdexcept>
 
