@@ -146,7 +146,8 @@ namespace Emerald
         float currentTime = glfwGetTime();
         g_deltaTime = currentTime - g_lastFrameTime;
         g_lastFrameTime = currentTime;
-        
+
+        glfwPollEvents();
         clearBackgroud();
     }
 
@@ -294,7 +295,6 @@ namespace Emerald
 
     void Gfx::endFrame()
     {
-        glfwPollEvents();
         swap();
     }
 

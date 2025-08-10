@@ -11,6 +11,14 @@ namespace Emerald
     {
         EMERALD_VERIFY_THROW(g_instance == nullptr, std::runtime_error, "Game instance already exist!");
         g_instance = this;
+
+        constexpr auto APPLICATION_NAME = "Emerald";
+
+        constexpr uint32_t APPLICATION_DEFAULT_WINDOW_WIDHT = 1280;
+        constexpr uint32_t APPLICATION_DEFAULT_WINDOW_HEIGHT = 720;
+
+        Emerald::Log::initialize();
+        Emerald::Gfx::initialize(APPLICATION_NAME, APPLICATION_DEFAULT_WINDOW_WIDHT, APPLICATION_DEFAULT_WINDOW_HEIGHT);
     }
 
     Game::~Game()
@@ -21,14 +29,6 @@ namespace Emerald
 
     void Game::run()
     {
-                constexpr auto APPLICATION_NAME = "Emerald";
-
-        constexpr uint32_t APPLICATION_DEFAULT_WINDOW_WIDHT = 1280;
-        constexpr uint32_t APPLICATION_DEFAULT_WINDOW_HEIGHT = 720;
-
-        Emerald::Log::initialize();
-        Emerald::Gfx::initialize(APPLICATION_NAME, APPLICATION_DEFAULT_WINDOW_WIDHT, APPLICATION_DEFAULT_WINDOW_HEIGHT);
-
         Emerald::Gfx::setClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         while (!Emerald::Gfx::windowShouldClose())

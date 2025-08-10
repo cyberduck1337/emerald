@@ -1,14 +1,13 @@
 #include "Game.hpp"
 #include "Input.hpp"
-#include "Log.hpp"
 #include "Gfx.hpp"
 #include "System.hpp"
 #include "entt/entity/fwd.hpp"
 
-class FreeCameraComponent
+class FlyCameraComponent
 {
 public:
-    FreeCameraComponent(float speed, float sensetivity) : m_speed(speed), m_sensetivity(sensetivity)
+    FlyCameraComponent(float speed, float sensetivity) : m_speed(speed), m_sensetivity(sensetivity)
     {
     }
 
@@ -22,7 +21,7 @@ class FlyCameraSystem : public Emerald::ECS::System
 public:
     virtual void update(entt::registry& registry) override final
     {
-        auto view = registry.view<Emerald::Gfx::Transform, Emerald::Gfx::Camera, const FreeCameraComponent>();
+        auto view = registry.view<Emerald::Gfx::Transform, Emerald::Gfx::Camera, const FlyCameraComponent>();
         for(auto&& [entity, transform, camera, freeCameraComponent] : view.each())
         {
             if(Emerald::Input::getKeyDown(Emerald::Input::KeyCode::W))
@@ -74,7 +73,7 @@ int main(int argc, char** argv)
     Emerald::Game game{};
     entt::entity mainCamera = game.createEntity();
     game.addComponent<Emerald::Gfx::Camera>(mainCamera, 45.0f, 0.1f, 100);
-    game.addComponent<FreeCameraComponent>(mainCamera, 1.0f, 0.1f);
+    game.addComponent<FlyCameraComponent>(mainCamera, 1.0f, 0.1f);
     game.addSystem<FlyCameraSystem>();
     game.run();
 

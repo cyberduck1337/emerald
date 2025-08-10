@@ -21,29 +21,5 @@ FetchContent_MakeAvailable(glad)
 FetchContent_MakeAvailable(glm)
 FetchContent_MakeAvailable(spdlog)
 
-add_executable(Emerald
-    Assertion.hpp
-    Game.hpp
-    Game.cpp
-    Input.hpp
-    Input.cpp
-    Gfx.hpp
-    Gfx.cpp
-    Log.hpp
-    Log.cpp
-    main.cpp
-    System.hpp
-)
-
-target_link_libraries(Emerald PUBLIC
-    fmt
-    glad
-    glfw
-    glm
-    spdlog::spdlog
-    EnTT::EnTT
-)
-
-target_compile_definitions(Emerald PUBLIC
-    GLM_ENABLE_EXPERIMENTAL
-)
+add_subdirectory(Source/EmeraldFramework)
+add_subdirectory(Source/Games/Cube)
