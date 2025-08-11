@@ -4,10 +4,10 @@
 
 namespace Emerald::ECS
 {
-    class System
+    class SystemBase
     {
     public:
-        virtual ~System() = default;
+        virtual ~SystemBase() = default;
         virtual void update(entt::registry& registry) = 0;
     };
 }

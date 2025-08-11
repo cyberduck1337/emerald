@@ -8,7 +8,7 @@ add_library(EmeraldFramework STATIC
     Gfx.cpp
     Log.hpp
     Log.cpp
-    System.hpp
+    ECS/Systems/SystemBase.hpp
     ECS/Components/NameComponent.hpp
     ECS/Components/NameComponent.cpp
     ECS/Components/Transform.hpp
