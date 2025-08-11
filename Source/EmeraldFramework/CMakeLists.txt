@@ -9,6 +9,8 @@ add_library(EmeraldFramework STATIC
     Log.hpp
     Log.cpp
     System.hpp
+    ECS/Components/Transform.hpp
+    ECS/Components/Transform.cpp
 )
 
 target_include_directories(EmeraldFramework PUBLIC

@@ -31,26 +31,6 @@ namespace Emerald
         using VertexBufferObjectType = uint32_t;
         using VertexArrayObjectType = uint32_t;
 
-        struct Transform
-        {
-            static constexpr glm::vec3 VECTOR_UP = { 0.0f, 1.0f, 0.0f };
-            static constexpr glm::vec3 VECTOR_FRONT = { 0.0f, 0.0f, -1.0f };
-
-            glm::vec3 position;
-            glm::quat rotation;
-            glm::vec3 scale;
-
-            glm::vec3 eulerAngles() const;
-            glm::vec3 direction() const;
-            glm::vec3 front() const;
-            glm::vec3 right() const;
-            glm::vec3 up() const;
-
-            void rotate(const glm::vec3& eulerAngles);
-
-            glm::mat4 model() const;
-        };
-
         struct Vertex
         {
             glm::vec3 position;
