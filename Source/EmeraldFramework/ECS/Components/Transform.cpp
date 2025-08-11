@@ -5,7 +5,7 @@ namespace Emerald::ECS
 {
     glm::vec3 Transform::eulerAngles() const
     {
-        return glm::degrees(glm::eulerAngles(glm::normalize(rotation)));
+        return glm::degrees(glm::eulerAngles(glm::normalize(m_rotation)));
     }
 
     glm::vec3 Transform::direction() const
@@ -37,11 +37,11 @@ namespace Emerald::ECS
     void Transform::rotate(const glm::vec3& eulerAngles)
     {
         glm::quat eulerRot = glm::quat(glm::radians(eulerAngles));
-        rotation *= glm::inverse(rotation) * eulerRot * rotation;
+        m_rotation *= glm::inverse(m_rotation) * eulerRot * m_rotation;
     }
 
     glm::mat4 Transform::model() const
     {
-        return (glm::translate(position) * glm::toMat4(rotation) * glm::scale(scale));
+        return (glm::translate(m_position) * glm::toMat4(m_rotation) * glm::scale(m_scale));
     }
 }

@@ -22,8 +22,8 @@ namespace Emerald::ECS
         glm::mat4 model() const;
 
     public:
-        glm::vec3 position;
-        glm::quat rotation;
-        glm::vec3 scale;
+        glm::vec3 m_position;
+        glm::quat m_rotation;
+        glm::vec3 m_scale;
     };
 }
