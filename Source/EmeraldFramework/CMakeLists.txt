@@ -8,6 +8,8 @@ add_library(EmeraldFramework STATIC
     Gfx.cpp
     Log.hpp
     Log.cpp
+    SceneGraph.hpp
+    SceneGraph.cpp
     ECS/Systems/SystemBase.hpp
     ECS/Components/NameComponent.hpp
     ECS/Components/NameComponent.cpp
