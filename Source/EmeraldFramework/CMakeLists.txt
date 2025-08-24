@@ -10,7 +10,11 @@ add_library(EmeraldFramework STATIC
     Scene.cpp
     SceneGraph.hpp
     SceneGraph.cpp
+    ECS/Entity.hpp
     ECS/Systems/SystemBase.hpp
+    ECS/Systems/System.hpp
+    ECS/Components/NameComponent.hpp
+    ECS/Components/ChildContainerComponent.hpp
     ECS/Components/NameComponent.hpp
     ECS/Components/NameComponent.cpp
     ECS/Components/Transform.hpp
