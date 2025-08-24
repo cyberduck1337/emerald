@@ -6,6 +6,8 @@ add_library(EmeraldFramework STATIC
     Gfx.cpp
     Log.hpp
     Log.cpp
+    Scene.hpp
+    Scene.cpp
     SceneGraph.hpp
     SceneGraph.cpp
     ECS/Systems/SystemBase.hpp
