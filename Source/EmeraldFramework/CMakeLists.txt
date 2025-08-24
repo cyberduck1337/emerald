@@ -1,7 +1,5 @@
 add_library(EmeraldFramework STATIC
     Assertion.hpp
-    Game.hpp
-    Game.cpp
     Input.hpp
     Input.cpp
     Gfx.hpp
