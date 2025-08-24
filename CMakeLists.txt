@@ -22,4 +22,4 @@ FetchContent_MakeAvailable(glm)
 FetchContent_MakeAvailable(spdlog)
 
 add_subdirectory(Source/EmeraldFramework)
-add_subdirectory(Source/Games/Cube)
+#add_subdirectory(Source/Games/Cube)
