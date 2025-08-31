@@ -11,9 +11,9 @@
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/ext/vector_uint2.hpp"
+#include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtx/quaternion.hpp"
-#include "glm/gtx/euler_angles.hpp"
 
 using WindowType = struct GLFWwindow*;
 
@@ -52,20 +52,6 @@ namespace Emerald
             VertexArrayObjectType m_vertexArrayObject;
         };
 
-        class Camera
-        {
-        public:
-            Camera(float fov, float near, float far);
-
-        public:
-            float m_fov;
-            float m_near;
-            float m_far;
-
-            glm::mat4 m_view;
-            glm::mat4 m_projection;
-        };
-
         enum class ShaderKind : uint32_t
         {
             VERTEX,
@@ -100,8 +86,6 @@ namespace Emerald
         static void setClearColor(float r, float g, float b, float a);
         static void clearBackgroud();
         static float deltaTime();
-        static Camera& getMainCamera();
-        static void setMainCamera(const Camera& camera);
         static ShaderType compileShader(std::string_view source, ShaderKind kind);
         static ShaderType linkShaderProgram(ShaderType vertex, ShaderType fragment);
         static ShaderType fallbackShader();

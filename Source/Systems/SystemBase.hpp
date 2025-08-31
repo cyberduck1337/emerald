@@ -2,7 +2,7 @@
 
 #include "entt/entt.hpp"
 
-namespace Emerald::ECS
+namespace Emerald
 {
     class SystemBase
     {

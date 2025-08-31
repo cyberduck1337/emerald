@@ -1,18 +1,17 @@
 #include "Gfx.hpp"
-#include "glad/glad.h"
+#include <cstdint>
+#include <stdexcept>
 #include "Assertion.hpp"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "fmt/format.h"
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/vector_uint2.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include <GL/gl.h>
-#include <cstdint>
-#include <stdexcept>
 
 namespace
 {
-    void glfwWindowRezieCallback(WindowType window, int width, int height)
+    void glfwWindowResizeCallback(WindowType window, const int width, const int height)
     {
         glViewport(0, 0, width, height);
     }
@@ -67,10 +66,6 @@ namespace Emerald
         m_triangles.clear();
     }
 
-    Gfx::Camera::Camera(float fov, float near, float far) : m_fov(fov), m_near(near), m_far(far)
-    {
-    }
-
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)
     {
         EMERALD_VERIFY_THROW(glfwInit() == GLFW_TRUE, std::runtime_error, "Failed to inistalize GLFW");
@@ -86,14 +81,14 @@ namespace Emerald
         
         EMERALD_VERIFY_THROW(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), std::runtime_error, "Failed to initialize glad");
 
-        glViewport(0, 0, width, height);
-        glfwSetFramebufferSizeCallback(g_window, glfwWindowRezieCallback);
+        glViewport(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
+        glfwSetFramebufferSizeCallback(g_window, glfwWindowResizeCallback);
 
         glFrontFace(GL_CCW);
         glEnable(GL_CULL_FACE);
 
-        ShaderType fallbackVertexShader = compileShader(SOLID_COLOR_VERTEX_SHADER, ShaderKind::VERTEX);
-        ShaderType fallbackFragmentShader = compileShader(SOLID_COLOR_FRAGMENT_SHADER, ShaderKind::FRAGMENT);
+        const ShaderType fallbackVertexShader = compileShader(SOLID_COLOR_VERTEX_SHADER, ShaderKind::VERTEX);
+        const ShaderType fallbackFragmentShader = compileShader(SOLID_COLOR_FRAGMENT_SHADER, ShaderKind::FRAGMENT);
         g_fallbackShader = linkShaderProgram(fallbackVertexShader, fallbackFragmentShader);
     }
 
@@ -101,7 +96,7 @@ namespace Emerald
     {
         static float g_lastFrameTime {};
 
-        float currentTime = glfwGetTime();
+        const float currentTime = static_cast<float>(glfwGetTime());
         g_deltaTime = currentTime - g_lastFrameTime;
         g_lastFrameTime = currentTime;
 
@@ -140,14 +135,14 @@ namespace Emerald
 
     Gfx::ShaderType Gfx::compileShader(std::string_view source, ShaderKind kind)
     {
-        Gfx::ShaderType shader {};
+        ShaderType shader {};
 
         switch (kind)
         {
-            case Gfx::ShaderKind::VERTEX:
+            case ShaderKind::VERTEX:
                 shader = glCreateShader(GL_VERTEX_SHADER);
                 break;
-            case Gfx::ShaderKind::FRAGMENT:
+            case ShaderKind::FRAGMENT:
                 shader = glCreateShader(GL_FRAGMENT_SHADER);
                 break;
             default:
@@ -197,7 +192,7 @@ namespace Emerald
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, bool value)
     {
-        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), static_cast<uint32_t>(value));
+        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), static_cast<GLint>(value));
     }
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, int32_t value)

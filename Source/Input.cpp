@@ -1,6 +1,6 @@
 #include "Input.hpp"
-#include "Gfx.hpp"
 #include "GLFW/glfw3.h"
+#include "Gfx.hpp"
 
 namespace Emerald
 {

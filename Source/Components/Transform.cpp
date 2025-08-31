@@ -1,8 +1,16 @@
 #include "Transform.hpp"
 #include "glm/ext.hpp"
 
-namespace Emerald::ECS
+namespace Emerald
 {
+    Transform::Transform() : m_position(), m_rotation(), m_scale(1.0f, 1.0f, 1.0f)
+    {
+    }
+
+    Transform::Transform(const glm::vec3& m_position, const glm::quat& m_rotation, const glm::vec3& m_scale) : m_position(m_position), m_rotation(m_rotation), m_scale(m_scale)
+    {
+    }
+
     glm::vec3 Transform::eulerAngles() const
     {
         return glm::degrees(glm::eulerAngles(glm::normalize(m_rotation)));
@@ -34,14 +42,14 @@ namespace Emerald::ECS
         return glm::normalize(glm::cross(right(), front()));
     }
 
-    void Transform::rotate(const glm::vec3& eulerAngles)
-    {
-        glm::quat eulerRot = glm::quat(glm::radians(eulerAngles));
-        m_rotation *= glm::inverse(m_rotation) * eulerRot * m_rotation;
-    }
-
     glm::mat4 Transform::model() const
     {
         return (glm::translate(m_position) * glm::toMat4(m_rotation) * glm::scale(m_scale));
     }
-}
+
+    void Transform::rotate(const glm::vec3& eulerAngles)
+    {
+        const glm::quat eulerRot = glm::quat(glm::radians(eulerAngles));
+        m_rotation *= glm::inverse(m_rotation) * eulerRot * m_rotation;
+    }
+} // namespace Emerald

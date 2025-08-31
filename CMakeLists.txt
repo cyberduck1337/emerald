@@ -21,5 +21,46 @@ FetchContent_MakeAvailable(glad)
 FetchContent_MakeAvailable(glm)
 FetchContent_MakeAvailable(spdlog)
 
-add_subdirectory(Source/EmeraldFramework)
-#add_subdirectory(Source/Games/Cube)
+add_executable(Emerald
+        Source/Emerald.cpp
+
+        Source/Assertion.hpp
+        Source/Input.hpp
+        Source/Input.cpp
+        Source/Gfx.hpp
+        Source/Gfx.cpp
+        Source/Log.hpp
+        Source/Log.cpp
+        Source/Scene.hpp
+        Source/Scene.cpp
+        Source/Entity.hpp
+        Source/Entity.cpp
+        Source/Systems/SystemBase.hpp
+        Source/Systems/System.hpp
+        Source/Systems/CameraUpdateSystem.hpp
+        Source/Systems/CameraUpdateSystem.cpp
+        Source/Components/CameraComponent.hpp
+        Source/Components/CameraComponent.cpp
+        Source/Components/NameComponent.hpp
+        Source/Components/NameComponent.hpp
+        Source/Components/NameComponent.cpp
+        Source/Components/Transform.hpp
+        Source/Components/Transform.cpp
+)
+
+target_include_directories(Emerald PUBLIC
+        Source
+)
+
+target_link_libraries(Emerald PUBLIC
+        fmt
+        glad
+        glfw
+        glm
+        spdlog::spdlog
+        EnTT::EnTT
+)
+
+target_compile_definitions(Emerald PUBLIC
+        GLM_ENABLE_EXPERIMENTAL
+)

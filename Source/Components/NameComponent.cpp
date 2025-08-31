@@ -1,7 +1,7 @@
 #include "NameComponent.hpp"
 #include <string>
 
-namespace Emerald::ECS
+namespace Emerald
 {
     NameComponent::NameComponent(const std::string& name) : m_name(name)
     {
