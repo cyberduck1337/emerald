@@ -14,8 +14,10 @@ int main(int argc, char** argv)
 
     world.addSystem<Emerald::CameraUpdateSystem>();
 
-    Emerald::Transform mainCameraInitialTransform{}
-    auto mainCamera = Emerald::Entity::instantiate("MainCamera");
+    Emerald::Transform mainCameraInitialTransform{};
+    mainCameraInitialTransform.m_position = {0.0f, 0.0f, -2.5f};
+    mainCameraInitialTransform.m_rotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
+    Emerald::Entity mainCamera = Emerald::Entity::instantiate("MainCamera", mainCameraInitialTransform);
     mainCamera.addComponent<Emerald::CameraComponent>(45.0f, 0.1f, 100.0f);
 
     while (!Emerald::Gfx::windowShouldClose())
