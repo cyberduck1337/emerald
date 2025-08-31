@@ -84,7 +84,7 @@ namespace Emerald
         static bool windowShouldClose();
         static glm::uvec2 getWindowSize();
         static void setClearColor(float r, float g, float b, float a);
-        static void clearBackgroud();
+        static void clearBackground();
         static float deltaTime();
         static ShaderType compileShader(std::string_view source, ShaderKind kind);
         static ShaderType linkShaderProgram(ShaderType vertex, ShaderType fragment);

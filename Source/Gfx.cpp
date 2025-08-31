@@ -101,7 +101,7 @@ namespace Emerald
         g_lastFrameTime = currentTime;
 
         glfwPollEvents();
-        clearBackgroud();
+        clearBackground();
     }
 
     bool Gfx::windowShouldClose()
@@ -123,7 +123,7 @@ namespace Emerald
         glClearColor(r, g, b, a);
     }
 
-    void Gfx::clearBackgroud()
+    void Gfx::clearBackground()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
