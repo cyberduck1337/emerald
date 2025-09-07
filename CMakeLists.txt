@@ -39,8 +39,12 @@ add_executable(Emerald
         Source/Systems/System.hpp
         Source/Systems/CameraUpdateSystem.hpp
         Source/Systems/CameraUpdateSystem.cpp
+        Source/Systems/FreeCameraControlSystem.hpp
+        Source/Systems/FreeCameraControlSystem.cpp
         Source/Components/CameraComponent.hpp
         Source/Components/CameraComponent.cpp
+        Source/Components/FreeCameraComponent.hpp
+        Source/Components/FreeCameraComponent.cpp
         Source/Components/NameComponent.hpp
         Source/Components/NameComponent.hpp
         Source/Components/NameComponent.cpp
