@@ -5,20 +5,20 @@
 
 namespace Emerald
 {
-    template<typename... Components>
+    template<typename DerivedType, typename... Components>
     class System : public SystemBase
     {
-    public:
-        virtual void update(Entity entity) = 0;
-
     private:
-        void update(entt::registry& registry) override
+        void update(entt::registry& registry) final
         {
-            for(auto&& entity : registry.view<Components...>())
+            auto* derived = static_cast<DerivedType*>(this);
+            auto view = registry.view<Components...>();
+
+            view.each([derived]<typename... Ts>(const entt::entity entity, Ts&&... components)
             {
                 const Entity e{entity};
-                update(e);
-            }
+                derived->update(e, std::forward<Ts>(components)...);
+            });
         }
     };
 }

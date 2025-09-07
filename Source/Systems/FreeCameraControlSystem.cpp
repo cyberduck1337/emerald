@@ -3,7 +3,6 @@
 #include "Components/FreeCameraComponent.hpp"
 #include "Gfx.hpp"
 #include "Input.hpp"
-#include "Log.hpp"
 
 namespace Emerald
 {
@@ -11,19 +10,16 @@ namespace Emerald
     {
     }
 
-    void FreeCameraControlSystem::update(Entity entity)
+    void FreeCameraControlSystem::update(Entity entity, Transform& transform, const FreeCameraComponent camera)
     {
-        Transform& transform = entity.getComponent<Transform>();
-        const FreeCameraComponent freeCamera = entity.getComponent<FreeCameraComponent>();
-
-        const float speed = freeCamera.speed();
-        const float sensitivity = freeCamera.sensitivity();
+        const float speed = camera.speed();
+        const float sensitivity = camera.sensitivity();
 
         const glm::vec2 mousePosition = Input::getMousePosition();
 
         if (Input::getKeyDown(Input::KeyCode::W))
         {
-            transform.m_position += freeCamera.speed() * Gfx::deltaTime() * transform.front();
+            transform.m_position += camera.speed() * Gfx::deltaTime() * transform.front();
         }
 
         if (Input::getKeyDown(Input::KeyCode::S))

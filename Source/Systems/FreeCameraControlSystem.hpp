@@ -6,12 +6,12 @@
 
 namespace Emerald
 {
-    class FreeCameraControlSystem final : public System<Transform, const FreeCameraComponent>
+    class FreeCameraControlSystem final : public System<FreeCameraControlSystem, Transform, const FreeCameraComponent>
     {
     public:
         FreeCameraControlSystem();
 
-        void update(Entity entity) override;
+        void update(Entity entity, Transform& transform, FreeCameraComponent camera);
 
     private:
         glm::vec2 m_lastMousePosition;
