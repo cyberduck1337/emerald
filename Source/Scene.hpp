@@ -16,7 +16,7 @@ namespace Emerald
         template<typename T, typename... Args>
         void addSystem(Args&&... args)
         {
-            std::unique_ptr<T> system = std::make_unique<T>(std::move<Args>(args)...);
+            std::unique_ptr<T> system = std::make_unique<T>(std::forward<Args>(args)...);
             m_systems.emplace_back(std::move(system));
         }
 
