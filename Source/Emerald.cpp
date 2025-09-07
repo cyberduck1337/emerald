@@ -1,7 +1,9 @@
+#include "Components/FreeCameraComponent.hpp"
 #include "Gfx.hpp"
 #include "Log.hpp"
 #include "Scene.hpp"
 #include "Systems/CameraUpdateSystem.hpp"
+#include "Systems/FreeCameraControlSystem.hpp"
 
 int main(int argc, char** argv)
 {
@@ -13,6 +15,7 @@ int main(int argc, char** argv)
 
     Emerald::Log::info("Welcome to Emerald!");
 
+    world.addSystem<Emerald::FreeCameraControlSystem>();
     world.addSystem<Emerald::CameraUpdateSystem>();
 
     Emerald::Transform mainCameraInitialTransform{};
@@ -20,6 +23,7 @@ int main(int argc, char** argv)
     mainCameraInitialTransform.m_rotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
     Emerald::Entity mainCamera = Emerald::Entity::instantiate("MainCamera", mainCameraInitialTransform);
     mainCamera.addComponent<Emerald::CameraComponent>(45.0f, 0.1f, 100.0f);
+    mainCamera.addComponent<Emerald::FreeCameraComponent>(1.0f, 0.1f);
 
     while (!Emerald::Gfx::windowShouldClose())
     {
