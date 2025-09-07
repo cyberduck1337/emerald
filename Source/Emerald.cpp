@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 
     Emerald::Log::initialize();
     Emerald::Gfx::initialize("Emerald", 1280, 720);
+    Emerald::Gfx::setClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     Emerald::Log::info("Welcome to Emerald!");
 
