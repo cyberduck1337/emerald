@@ -135,13 +135,20 @@ namespace Emerald
             MENU = 348,
         };
 
+        enum class MouseButton : uint32_t
+        {
+            LEFT = 1,
+            RIGHT = 2,
+            MIDDLE = 3
+        };
+
         static bool getKey(KeyCode keyCode);
         static bool getKeyDown(KeyCode keyCode);
         static bool getKeyUp(KeyCode keyCode);
 
-        static bool getMouseButton(uint32_t button);
-        static bool getMouseButtonDown(uint32_t button);
-        static bool getMouseButtonUp(uint32_t button);
+        static bool getMouseButton(MouseButton button);
+        static bool getMouseButtonDown(MouseButton button);
+        static bool getMouseButtonUp(MouseButton button);
         static glm::vec2 getMousePosition();
     };
 }

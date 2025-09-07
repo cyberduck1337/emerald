@@ -19,17 +19,17 @@ namespace Emerald
         return glfwGetKey(Gfx::g_window, static_cast<int>(keyCode)) == GLFW_RELEASE;
     }
 
-    bool Input::getMouseButton(uint32_t button)
+    bool Input::getMouseButton(MouseButton button)
     {
         return static_cast<bool>(glfwGetMouseButton(Gfx::g_window, static_cast<int>(button)));
     }
 
-    bool Input::getMouseButtonDown(uint32_t button)
+    bool Input::getMouseButtonDown(MouseButton button)
     {
         return glfwGetMouseButton(Gfx::g_window, static_cast<int>(button)) == GLFW_PRESS;
     }
 
-    bool Input::getMouseButtonUp(uint32_t button)
+    bool Input::getMouseButtonUp(MouseButton button)
     {
         return glfwGetMouseButton(Gfx::g_window, static_cast<int>(button)) == GLFW_RELEASE;
     }
