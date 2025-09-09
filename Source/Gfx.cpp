@@ -90,6 +90,8 @@ namespace Emerald
         const ShaderType fallbackVertexShader = compileShader(SOLID_COLOR_VERTEX_SHADER, ShaderKind::VERTEX);
         const ShaderType fallbackFragmentShader = compileShader(SOLID_COLOR_FRAGMENT_SHADER, ShaderKind::FRAGMENT);
         g_fallbackShader = linkShaderProgram(fallbackVertexShader, fallbackFragmentShader);
+        destroyShader(fallbackVertexShader);
+        destroyShader(fallbackFragmentShader);
     }
 
     void Gfx::beginFrame()
