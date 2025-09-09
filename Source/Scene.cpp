@@ -19,7 +19,7 @@ namespace Emerald
         }
     }
 
-    void Scene::update()
+    void Scene::update() const
     {
         for (auto&& system : m_systems)
         {

@@ -11,7 +11,7 @@ namespace Emerald
         explicit Scene(std::string name);
         ~Scene();
 
-        void update();
+        void update() const;
 
         template<typename T, typename... Args>
         void addSystem(Args&&... args)
