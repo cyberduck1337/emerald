@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.hpp"
+#include "EntityUtils.hpp"
 #include "SystemBase.hpp"
 
 namespace Emerald
@@ -14,10 +14,9 @@ namespace Emerald
             auto* derived = static_cast<DerivedType*>(this);
             auto view = registry.view<Components...>();
 
-            view.each([derived]<typename... Ts>(const entt::entity entity, Ts&&... components)
+            view.each([derived]<typename... Ts>(const Entity entity, Ts&&... components)
             {
-                const Entity e{entity};
-                derived->update(e, std::forward<Ts>(components)...);
+                derived->update(entity, std::forward<Ts>(components)...);
             });
         }
     };

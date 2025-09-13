@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components/FreeCameraComponent.hpp"
-#include "Entity.hpp"
+#include "EntityUtils.hpp"
 #include "System.hpp"
 
 namespace Emerald
