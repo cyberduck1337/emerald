@@ -31,6 +31,8 @@ add_executable(Emerald
         Source/Gfx.cpp
         Source/Log.hpp
         Source/Log.cpp
+        Source/Reflection.hpp
+        Source/Reflection.cpp
         Source/Scene.hpp
         Source/Scene.cpp
         Source/EntityUtils.hpp
@@ -50,6 +52,8 @@ add_executable(Emerald
         Source/Components/NameComponent.cpp
         Source/Components/Transform.hpp
         Source/Components/Transform.cpp
+        Source/Components/StaticMeshComponent.hpp
+        Source/Components/StaticMeshComponent.cpp
 )
 
 target_include_directories(Emerald PUBLIC
