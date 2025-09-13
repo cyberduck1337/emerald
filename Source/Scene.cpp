@@ -2,28 +2,39 @@
 
 #include <utility>
 
+#include "Assertion.hpp"
 #include "Components/NameComponent.hpp"
-#include "Entity.hpp"
+#include "Components/Transform.hpp"
 
 namespace Emerald
 {
-    Scene::Scene(std::string name) : m_name(std::move(name))
+    Scene::Scene()
     {
+        EMERALD_VERIFY_THROW(g_instance == nullptr, std::runtime_error, "Scene::g_instance already initialized!");
+        g_instance = this;
     }
 
     Scene::~Scene()
     {
-        for(const entt::entity entity : Entity::g_registry.view<Transform>())
+        for(const entt::entity entity : m_registry.view<Transform>())
         {
-            Entity::g_registry.destroy(entity);
+            m_registry.destroy(entity);
         }
+
+        g_instance = nullptr;
     }
 
-    void Scene::update() const
+    Scene& Scene::get()
+    {
+        EMERALD_VERIFY_THROW(g_instance != nullptr, std::runtime_error, "Scene::g_instance has not been initialized yet!");
+        return *g_instance;
+    }
+
+    void Scene::update()
     {
         for (auto&& system : m_systems)
         {
-            system->update(Entity::g_registry);
+            system->update(m_registry);
         }
     }
 } // namespace Emerald
