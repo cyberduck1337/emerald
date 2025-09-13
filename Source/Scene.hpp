@@ -1,17 +1,28 @@
 #pragma once
 
-#include <vector>
 #include "Systems/SystemBase.hpp"
+
+#include <memory>
+#include <vector>
 
 namespace Emerald
 {
     class Scene final
     {
+        friend class EntityUtils;
+
     public:
-        explicit Scene(std::string name);
+        Scene();
         ~Scene();
 
-        void update() const;
+        Scene(const Scene&) = delete;
+        Scene(Scene&&) = delete;
+        Scene& operator=(const Scene&) = delete;
+        Scene&& operator=(Scene&&) = delete;
+
+        static Scene& get();
+
+        void update();
 
         template<typename T, typename... Args>
         void addSystem(Args&&... args)
@@ -20,8 +31,16 @@ namespace Emerald
             m_systems.emplace_back(std::move(system));
         }
 
+        template<typename... Ts>
+        decltype(auto) view() const
+        {
+            return m_registry.view<Ts...>();
+        }
+
     private:
-        std::string m_name;
+        static inline Scene* g_instance { nullptr };
+
+        entt::registry m_registry;
         std::vector<std::unique_ptr<SystemBase>> m_systems;
     };
 } // namespace Emerald

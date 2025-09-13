@@ -33,6 +33,8 @@ add_executable(Emerald
         Source/Log.cpp
         Source/Scene.hpp
         Source/Scene.cpp
+        Source/EntityUtils.hpp
+        Source/EntityUtils.cpp
         Source/Systems/SystemBase.hpp
         Source/Systems/System.hpp
         Source/Systems/CameraUpdateSystem.hpp
