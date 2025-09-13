@@ -137,9 +137,9 @@ namespace Emerald
 
         enum class MouseButton : uint32_t
         {
-            LEFT = 1,
-            RIGHT = 2,
-            MIDDLE = 3
+            LEFT = 0,
+            RIGHT = 1,
+            MIDDLE = 2
         };
 
         static bool getKey(KeyCode keyCode);
