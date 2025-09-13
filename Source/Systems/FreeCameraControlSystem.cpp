@@ -47,7 +47,7 @@ namespace Emerald
             transform.m_position -= speed * Gfx::deltaTime() * transform.up();
         }
 
-        if (Input::getMouseButton(Input::MouseButton::RIGHT))
+        if (Input::getMouseButtonDown(Input::MouseButton::RIGHT))
         {
             const float xOffset = (m_lastMousePosition.x - mousePosition.x) * sensitivity;
             const float yOffset = (mousePosition.y - m_lastMousePosition.y) * sensitivity;
