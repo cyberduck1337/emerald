@@ -3,17 +3,11 @@
 #include <array>
 #include <cstdint>
 #include <string>
-#include <cstdint>
 #include <string_view>
 #include <vector>
 
-#include "Input.hpp"
-#include "glm/ext/matrix_float4x4.hpp"
-#include "glm/ext/vector_float3.hpp"
-#include "glm/ext/vector_uint2.hpp"
-#include "glm/gtx/euler_angles.hpp"
-#include "glm/gtx/matrix_decompose.hpp"
-#include "glm/gtx/quaternion.hpp"
+#include "Components/Transform.hpp"
+#include "glm/fwd.hpp"
 
 using WindowType = struct GLFWwindow*;
 
@@ -37,15 +31,17 @@ namespace Emerald
             glm::vec2 uv;
         };
 
+        using Triangle = std::array<uint32_t, 3>;
+
         class Mesh
         {
         public:
-            Mesh(const std::vector<Gfx::Vertex>& vertices, const std::vector<std::array<uint32_t, 3>>& triangles);
-            Mesh(std::vector<Gfx::Vertex>&& vertices, std::vector<std::array<uint32_t, 3>>&& triangles);
+            Mesh(const std::vector<Vertex>& vertices, const std::vector<std::array<uint32_t, 3>>& triangles);
+            Mesh(std::vector<Vertex>&& vertices, std::vector<std::array<uint32_t, 3>>&& triangles);
             ~Mesh();
 
         protected:
-            std::vector<Gfx::Vertex> m_vertices;
+            std::vector<Vertex> m_vertices;
             std::vector<std::array<uint32_t, 3>> m_triangles;
 
             VertexBufferObjectType m_vertexBufferObject;

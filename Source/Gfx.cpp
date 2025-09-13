@@ -4,16 +4,50 @@
 #include "Assertion.hpp"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Log.hpp"
 #include "fmt/format.h"
-#include "glm/ext/matrix_float4x4.hpp"
-#include "glm/ext/vector_uint2.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
+#define GL_COMMAND(command, ...)                                          \
+    command(__VA_ARGS__);                                                 \
+    {                                                                     \
+        GLenum errorCode{};                                               \
+        while ((errorCode = glGetError()) != GL_NO_ERROR)                 \
+        {                                                                 \
+            std::string error{};                                          \
+            switch (errorCode)                                            \
+            {                                                             \
+                case GL_INVALID_ENUM:                                     \
+                    error = "GL_INVALID_ENUM";                            \
+                    break;                                                \
+                case GL_INVALID_VALUE:                                    \
+                    error = "GL_INVALID_VALUE";                           \
+                    break;                                                \
+                case GL_INVALID_OPERATION:                                \
+                    error = "GL_INVALID_OPERATION";                       \
+                    break;                                                \
+                case GL_STACK_OVERFLOW:                                   \
+                    error = "GL_STACK_OVERFLOW";                          \
+                    break;                                                \
+                case GL_STACK_UNDERFLOW:                                  \
+                    error = "GL_STACK_UNDERFLOW";                         \
+                    break;                                                \
+                case GL_OUT_OF_MEMORY:                                    \
+                    error = "GL_OUT_OF_MEMORY";                           \
+                    break;                                                \
+                case GL_INVALID_FRAMEBUFFER_OPERATION:                    \
+                    error = "GL_INVALID_FRAMEBUFFER_OPERATION";           \
+                    break;                                                \
+            }                                                             \
+            Emerald::Log::error("{} | {}:{}", error, __FILE__, __LINE__); \
+        }                                                                 \
+    }
 
 namespace
 {
     void glfwWindowResizeCallback(WindowType window, const int width, const int height)
     {
-        glViewport(0, 0, width, height);
+        GL_COMMAND(glViewport, 0, 0, width, height);
     }
 }
 
@@ -28,24 +62,19 @@ namespace Emerald
         uniform mat4 view;
         uniform mat4 projection;
 
-        out vec4 outPos;
-
         void main()
         {
-            outPos = projection * view * model * vec4(inPos, 1.0);
+            gl_Position = projection * view * model * vec4(inPos, 1.0);
         }
     )";
 
     constexpr auto SOLID_COLOR_FRAGMENT_SHADER = R"(
         #version 460 core
 
-        layout (location = 0) in vec3 inColor;
-
         out vec4 FragColor;
-
         void main()
         {
-            FragColor = vec4(inColor, 1.0);
+            FragColor = vec4(0.5, 0.2, 0.3, 1.0);
         }
     )";
 
@@ -81,11 +110,11 @@ namespace Emerald
         
         EMERALD_VERIFY_THROW(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), std::runtime_error, "Failed to initialize glad");
 
-        glViewport(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
+        GL_COMMAND(glViewport, 0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
         glfwSetFramebufferSizeCallback(g_window, glfwWindowResizeCallback);
 
-        glFrontFace(GL_CCW);
-        glEnable(GL_CULL_FACE);
+        GL_COMMAND(glFrontFace, GL_CCW);
+        GL_COMMAND(glEnable, GL_CULL_FACE);
 
         const ShaderType fallbackVertexShader = compileShader(SOLID_COLOR_VERTEX_SHADER, ShaderKind::VERTEX);
         const ShaderType fallbackFragmentShader = compileShader(SOLID_COLOR_FRAGMENT_SHADER, ShaderKind::FRAGMENT);
@@ -122,12 +151,12 @@ namespace Emerald
 
     void Gfx::setClearColor(float r, float g, float b, float a)
     {
-        glClearColor(r, g, b, a);
+        GL_COMMAND(glClearColor, r, g, b, a);
     }
 
     void Gfx::clearBackground()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GL_COMMAND(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     float Gfx::deltaTime()
@@ -142,25 +171,29 @@ namespace Emerald
         switch (kind)
         {
             case ShaderKind::VERTEX:
-                shader = glCreateShader(GL_VERTEX_SHADER);
+            {
+                shader = GL_COMMAND(glCreateShader, GL_VERTEX_SHADER);
                 break;
+            }
             case ShaderKind::FRAGMENT:
-                shader = glCreateShader(GL_FRAGMENT_SHADER);
+            {
+                shader = GL_COMMAND(glCreateShader, GL_FRAGMENT_SHADER);
                 break;
+            }
             default:
                 EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Unexpected ShaderKind {:#x}", static_cast<uint32_t>(kind)));
         }
         
         const char* shaderSourcePtr = source.data();
-        glShaderSource(shader, 1, &shaderSourcePtr, nullptr);
-        glCompileShader(shader);
+        GL_COMMAND(glShaderSource, shader, 1, &shaderSourcePtr, nullptr);
+        GL_COMMAND(glCompileShader, shader);
 
         int32_t success;
         char info[512];
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        GL_COMMAND(glGetShaderiv, shader, GL_COMPILE_STATUS, &success);
         if(!success)
         {
-            glGetShaderInfoLog(shader, std::size(info), nullptr, info);
+            GL_COMMAND(glGetShaderInfoLog, shader,  std::size(info), nullptr, info);
             EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Failed to compile shader: {}", info));
         }
 
@@ -169,18 +202,18 @@ namespace Emerald
 
     Gfx::ShaderType Gfx::linkShaderProgram(ShaderType vertex, ShaderType fragment)
     {
-        Gfx::ShaderType shaderProgram = glCreateProgram();
+        ShaderType shaderProgram = GL_COMMAND(glCreateProgram);
 
-        glAttachShader(shaderProgram, vertex);
-        glAttachShader(shaderProgram, fragment);
-        glLinkProgram(shaderProgram);
+        GL_COMMAND(glAttachShader, shaderProgram, vertex);
+        GL_COMMAND(glAttachShader, shaderProgram, fragment);
+        GL_COMMAND(glLinkProgram, shaderProgram);
 
         int32_t success;
         char info[512];
-        glGetShaderiv(shaderProgram, GL_LINK_STATUS, &success);
+        GL_COMMAND(glGetProgramiv, shaderProgram, GL_LINK_STATUS, &success);
         if(!success)
         {
-            glGetShaderInfoLog(shaderProgram, std::size(info), nullptr, info);
+            GL_COMMAND(glGetProgramInfoLog, shaderProgram, std::size(info), nullptr, info);
             EMERALD_VERIFY_THROW(false, std::runtime_error, fmt::format("Failed to link shader: {}", shaderProgram));
         }
 
@@ -194,53 +227,114 @@ namespace Emerald
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, bool value)
     {
-        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), static_cast<GLint>(value));
+        const int32_t uniformLocation = GL_COMMAND(glGetUniformLocation, shaderProgram, name.c_str());
+        GL_COMMAND(glUniform1i, uniformLocation, static_cast<GLint>(value));
     }
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, int32_t value)
     {
-        glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
+        const int32_t uniformLocation = GL_COMMAND(glGetUniformLocation, shaderProgram, name.c_str());
+        GL_COMMAND(glUniform1i, uniformLocation, value);
     }
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, float value)
     {
-        glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()), value);
+        const int32_t uniformLocation = GL_COMMAND(glGetUniformLocation, shaderProgram, name.c_str());
+        GL_COMMAND(glUniform1f, uniformLocation, value);
+
     }
 
     void Gfx::setShaderUniformValue(ShaderType shaderProgram, const std::string& name, const glm::mat4& value)
     {
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+        const int32_t uniformLocation = GL_COMMAND(glGetUniformLocation, shaderProgram, name.c_str());
+        GL_COMMAND(glUniformMatrix4fv, uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    void Gfx::setShaderMat4x4Value(ShaderType shaderProgram, const std::string& name, const glm::mat4& value)
+    {
+        const int32_t uniformLocation = GL_COMMAND(glGetUniformLocation, shaderProgram, name.c_str());
+        GL_COMMAND(glUniformMatrix4fv, uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
     }
 
     void Gfx::destroyShader(ShaderType shader)
     {
-        glDeleteShader(shader);
+        GL_COMMAND(glDeleteShader, shader);
     }
 
     Gfx::VertexBufferObjectType Gfx::createVertexBufferObject()
     {
-        Gfx::VertexBufferObjectType vertexBufferObject{};
-        glGenBuffers(1, &vertexBufferObject);
+        VertexBufferObjectType vertexBufferObject{};
+        GL_COMMAND(glGenBuffers, 1, &vertexBufferObject);
 
         return vertexBufferObject;
     }
 
     void Gfx::destroyVertexBufferObject(VertexBufferObjectType vertexBufferObject)
     {
-        glDeleteBuffers(1, &vertexBufferObject);
+        GL_COMMAND(glDeleteBuffers, 1, &vertexBufferObject);
     }
 
     Gfx::VertexArrayObjectType Gfx::createVertexArrayObject()
     {
-        Gfx::VertexArrayObjectType vertexArrayObject{};
-        glGenVertexArrays(1, &vertexArrayObject);
+        VertexArrayObjectType vertexArrayObject{};
+        GL_COMMAND(glGenVertexArrays, 1, &vertexArrayObject);
 
         return vertexArrayObject;
     }
 
     void Gfx::destroyVertexArrayObject(VertexArrayObjectType vertexArrayObject)
     {
-        glDeleteVertexArrays(1, &vertexArrayObject);
+        GL_COMMAND(glDeleteVertexArrays, 1, &vertexArrayObject);
+    }
+
+    void Gfx::updateVertexBufferData(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices)
+    {
+        GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
+        GL_COMMAND(glBufferData, GL_ARRAY_BUFFER, sizeof(std::vector<Vertex>::value_type) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+    }
+
+    void Gfx::drawIndexedGeometry(const Transform& transform, const std::vector<Triangle>& triangles, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, const std::vector<Attribute>& attributesDataOffsets)
+    {
+        GL_COMMAND(glUseProgram, shaderProgram);
+
+        setShaderMat4x4Value(shaderProgram, "model", transform.model());
+
+        GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
+        GL_COMMAND(glBindVertexArray, vertexArrayObject);
+        for (auto&& attributePointer : attributesDataOffsets)
+        {
+            GLenum attributeType {};
+            switch (attributePointer.type)
+            {
+                case Attribute::Type::BYTE:
+                    attributeType = GL_BYTE;
+                    break;
+                case Attribute::Type::UNSIGNED_BYTE:
+                    attributeType = GL_UNSIGNED_BYTE;
+                    break;
+                case Attribute::Type::SHORT:
+                    attributeType = GL_SHORT;
+                    break;
+                case Attribute::Type::UNSIGNED_SHORT:
+                    attributeType = GL_UNSIGNED_SHORT;
+                    break;
+                case Attribute::Type::INTEGER:
+                    attributeType = GL_INT;
+                    break;
+                case Attribute::Type::UNSIGNED_INTEGER:
+                    attributeType = GL_UNSIGNED_INT;
+                    break;
+                case Attribute::Type::FLOAT:
+                    attributeType =  GL_FLOAT;
+                    break;
+                default:
+                    break;
+            }
+
+            GL_COMMAND(glVertexAttribPointer, attributePointer.index, attributePointer.numComponents, attributeType, attributePointer.aligned, attributePointer.stride, (void*)attributePointer.offset);
+            GL_COMMAND(glEnableVertexAttribArray, attributePointer.index);
+        }
+        GL_COMMAND(glDrawElements, GL_TRIANGLES, triangles.size() * 3, GL_UNSIGNED_INT, triangles.data());
     }
 
     void Gfx::swap()
