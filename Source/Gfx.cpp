@@ -303,8 +303,13 @@ namespace Emerald
         GL_COMMAND(glDeleteVertexArrays, 1, &elementBufferObject);
     }
 
+    void Gfx::upload(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices, ElementBufferObjectType elementBufferObject, const std::vector<Triangle>& triangles)
+    {
         GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
         GL_COMMAND(glBufferData, GL_ARRAY_BUFFER, sizeof(std::vector<Vertex>::value_type) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+
+        GL_COMMAND(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
+        GL_COMMAND(glBufferData, GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(std::vector<Triangle>::value_type), triangles.data(), GL_STATIC_DRAW);
     }
 
     void Gfx::drawIndexedGeometry(const Transform& transform, const std::vector<Triangle>& triangles, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, const std::vector<Attribute>& attributesDataOffsets)
