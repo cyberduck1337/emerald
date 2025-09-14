@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Systems/SystemBase.hpp"
-
+#include "Entity.hpp"
 #include <memory>
 #include <vector>
 
@@ -24,6 +24,9 @@ namespace Emerald
 
         void update();
 
+        [[nodiscard]]
+        Entity getCameraObject() const noexcept;
+
         template<typename T, typename... Args>
         void addSystem(Args&&... args)
         {
@@ -41,6 +44,7 @@ namespace Emerald
         static inline Scene* g_instance { nullptr };
 
         entt::registry m_registry;
+        Entity m_camera;
         std::vector<std::unique_ptr<SystemBase>> m_systems;
     };
 } // namespace Emerald
