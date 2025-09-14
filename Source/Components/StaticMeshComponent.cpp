@@ -2,33 +2,35 @@
 
 namespace Emerald
 {
-    StaticMeshComponent::StaticMeshComponent(std::vector<Gfx::Vertex>& vertices, std::vector<Gfx::Triangle>& triangles) : m_vertexBufferObject(Gfx::createVertexBufferObject()), m_vertexArrayObject(Gfx::createVertexArrayObject()), m_vertices(vertices), m_triangles(triangles)
+    StaticMeshComponent::StaticMeshComponent(const std::vector<Gfx::Vertex>& vertices, const std::vector<Gfx::Triangle>& triangles) noexcept : m_vertexBufferObject(Gfx::createVertexBufferObject()), m_vertexArrayObject(Gfx::createVertexArrayObject()), m_elementBufferObject(Gfx::createElementBufferObject()), m_indicesCount(triangles.size() * 3)
     {
-        Gfx::updateVertexBufferData(m_vertexBufferObject, m_vertices);
+        Gfx::upload(m_vertexBufferObject, vertices, m_elementBufferObject, triangles);
     }
 
-    StaticMeshComponent::StaticMeshComponent(std::vector<Gfx::Vertex>&& vertices, std::vector<Gfx::Triangle>&& triangles) : m_vertexBufferObject(Gfx::createVertexBufferObject()), m_vertexArrayObject(Gfx::createVertexArrayObject()), m_vertices(std::move(vertices)), m_triangles(std::move(triangles))
+    StaticMeshComponent::~StaticMeshComponent() noexcept
     {
-        Gfx::updateVertexBufferData(m_vertexBufferObject, m_vertices);
+        Gfx::destroyVertexBufferObject(m_vertexBufferObject);
+        Gfx::destroyVertexArrayObject(m_vertexArrayObject);
+        Gfx::destroyElementBufferObject(m_elementBufferObject);
     }
 
-    Gfx::VertexBufferObjectType StaticMeshComponent::vbo() const
+    Gfx::VertexBufferObjectType StaticMeshComponent::vbo() const noexcept
     {
         return m_vertexBufferObject;
     }
 
-    Gfx::VertexArrayObjectType StaticMeshComponent::vao() const
+    Gfx::VertexArrayObjectType StaticMeshComponent::vao() const noexcept
     {
         return m_vertexArrayObject;
     }
 
-    const std::vector<Gfx::Vertex>& StaticMeshComponent::vertices() const
+    Gfx::ElementBufferObjectType StaticMeshComponent::ebo() const noexcept
     {
-        return m_vertices;
+        return m_elementBufferObject;
     }
 
-    const std::vector<Gfx::Triangle>& StaticMeshComponent::triangles() const
+    size_t StaticMeshComponent::indicesCount() const noexcept
     {
-        return m_triangles;
+        return m_indicesCount;
     }
 } // namespace Emerald

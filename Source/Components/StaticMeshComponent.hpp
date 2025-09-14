@@ -7,26 +7,26 @@ namespace Emerald
     class StaticMeshComponent
     {
     public:
-        StaticMeshComponent(std::vector<Gfx::Vertex>& vertices, std::vector<Gfx::Triangle>& triangles);
-        StaticMeshComponent(std::vector<Gfx::Vertex>&& vertices, std::vector<Gfx::Triangle>&& triangles);
+        StaticMeshComponent(const std::vector<Gfx::Vertex>& vertices, const std::vector<Gfx::Triangle>& triangles) noexcept;
+        ~StaticMeshComponent() noexcept;
 
         [[nodiscard]]
-        Gfx::VertexBufferObjectType vbo() const;
+        Gfx::VertexBufferObjectType vbo() const noexcept;
 
         [[nodiscard]]
-        Gfx::VertexArrayObjectType vao() const;
+        Gfx::VertexArrayObjectType vao() const noexcept;
 
         [[nodiscard]]
-        const std::vector<Gfx::Vertex>& vertices() const;
+        Gfx::ElementBufferObjectType ebo() const noexcept;
 
         [[nodiscard]]
-        const std::vector<Gfx::Triangle>& triangles() const;
+        size_t indicesCount() const noexcept;
 
     private:
         Gfx::VertexBufferObjectType m_vertexBufferObject;
         Gfx::VertexArrayObjectType m_vertexArrayObject;
+        Gfx::ElementBufferObjectType m_elementBufferObject;
 
-        std::vector<Gfx::Vertex> m_vertices;
-        std::vector<Gfx::Triangle> m_triangles;
+        size_t m_indicesCount;
     };
 } // namespace Emerald
