@@ -4,4 +4,4 @@
     if(!(EXPR)) [[unlikely]]                       \
     {                                              \
         throw EXCEPTION(__VA_ARGS__);              \
-    }                                              \
+    }
