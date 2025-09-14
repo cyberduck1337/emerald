@@ -312,48 +312,26 @@ namespace Emerald
         GL_COMMAND(glBufferData, GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(std::vector<Triangle>::value_type), triangles.data(), GL_STATIC_DRAW);
     }
 
-    void Gfx::drawIndexedGeometry(const Transform& transform, const std::vector<Triangle>& triangles, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, const std::vector<Attribute>& attributesDataOffsets)
+    void Gfx::drawIndexedGeometry(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection, size_t indexCount, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, ElementBufferObjectType elementBufferObject)
     {
-        GL_COMMAND(glUseProgram, shaderProgram);
-
-        setShaderMat4x4Value(shaderProgram, "model", transform.model());
+        GL_COMMAND(glBindVertexArray, vertexArrayObject);
 
         GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
-        GL_COMMAND(glBindVertexArray, vertexArrayObject);
-        for (auto&& attributePointer : attributesDataOffsets)
-        {
-            GLenum attributeType {};
-            switch (attributePointer.type)
-            {
-                case Attribute::Type::BYTE:
-                    attributeType = GL_BYTE;
-                    break;
-                case Attribute::Type::UNSIGNED_BYTE:
-                    attributeType = GL_UNSIGNED_BYTE;
-                    break;
-                case Attribute::Type::SHORT:
-                    attributeType = GL_SHORT;
-                    break;
-                case Attribute::Type::UNSIGNED_SHORT:
-                    attributeType = GL_UNSIGNED_SHORT;
-                    break;
-                case Attribute::Type::INTEGER:
-                    attributeType = GL_INT;
-                    break;
-                case Attribute::Type::UNSIGNED_INTEGER:
-                    attributeType = GL_UNSIGNED_INT;
-                    break;
-                case Attribute::Type::FLOAT:
-                    attributeType =  GL_FLOAT;
-                    break;
-                default:
-                    break;
-            }
+        GL_COMMAND(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
 
-            GL_COMMAND(glVertexAttribPointer, attributePointer.index, attributePointer.numComponents, attributeType, attributePointer.aligned, attributePointer.stride, (void*)attributePointer.offset);
-            GL_COMMAND(glEnableVertexAttribArray, attributePointer.index);
-        }
-        GL_COMMAND(glDrawElements, GL_TRIANGLES, triangles.size() * 3, GL_UNSIGNED_INT, triangles.data());
+        GL_COMMAND(glEnableVertexAttribArray, 0);
+        GL_COMMAND(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
+
+        GL_COMMAND(glEnableVertexAttribArray, 1);
+        GL_COMMAND(glVertexAttribPointer, 1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, uv)));
+
+        GL_COMMAND(glUseProgram, shaderProgram);
+
+        setShaderMat4x4Value(shaderProgram, "model", model);
+        setShaderMat4x4Value(shaderProgram, "view", view);
+        setShaderMat4x4Value(shaderProgram, "projection", projection);
+
+        GL_COMMAND(glDrawElements, GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
     }
 
     void Gfx::swap()

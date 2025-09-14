@@ -96,10 +96,10 @@ namespace Emerald
         static void destroyVertexBufferObject(VertexBufferObjectType vertexBufferObject);
         static VertexArrayObjectType createVertexArrayObject();
         static void destroyVertexArrayObject(VertexArrayObjectType vertexArrayObject);
-        static void drawIndexedGeometry(const Transform& transform, const std::vector<Triangle>& triangles, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, const std::vector<Attribute>& attributesDataOffsets);
         static ElementBufferObjectType createElementBufferObject();
         static void destroyElementBufferObject(ElementBufferObjectType elementBufferObject);
         static void upload(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices, ElementBufferObjectType elementBufferObject, const std::vector<Triangle>& triangles);
+        static void drawIndexedGeometry(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection, size_t indexCount, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, ElementBufferObjectType elementBufferObject);
         static void swap();
         static void endFrame();
         static void destroy();
