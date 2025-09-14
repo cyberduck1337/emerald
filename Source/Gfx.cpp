@@ -38,6 +38,9 @@
                 case GL_INVALID_FRAMEBUFFER_OPERATION:                    \
                     error = "GL_INVALID_FRAMEBUFFER_OPERATION";           \
                     break;                                                \
+                default:                                                  \
+                    error = "GL_ERROR_UNKNOWN";                           \
+                    break;                                                \
             }                                                             \
             Emerald::Log::error("{} | {}:{}", error, __FILE__, __LINE__); \
         }                                                                 \
