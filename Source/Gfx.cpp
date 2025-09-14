@@ -287,8 +287,19 @@ namespace Emerald
         GL_COMMAND(glDeleteVertexArrays, 1, &vertexArrayObject);
     }
 
-    void Gfx::updateVertexBufferData(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices)
+    Gfx::ElementBufferObjectType Gfx::createElementBufferObject()
     {
+        ElementBufferObjectType elementBufferObject{};
+        GL_COMMAND(glGenBuffers, 1, &elementBufferObject);
+
+        return elementBufferObject;
+    }
+
+    void Gfx::destroyElementBufferObject(ElementBufferObjectType elementBufferObject)
+    {
+        GL_COMMAND(glDeleteVertexArrays, 1, &elementBufferObject);
+    }
+
         GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
         GL_COMMAND(glBufferData, GL_ARRAY_BUFFER, sizeof(std::vector<Vertex>::value_type) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
     }

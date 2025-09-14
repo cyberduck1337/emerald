@@ -24,6 +24,7 @@ namespace Emerald
         using ShaderType = uint32_t;
         using VertexBufferObjectType = uint32_t;
         using VertexArrayObjectType = uint32_t;
+        using ElementBufferObjectType = uint32_t;
 
         struct Vertex
         {
@@ -97,6 +98,8 @@ namespace Emerald
         static void destroyVertexArrayObject(VertexArrayObjectType vertexArrayObject);
         static void updateVertexBufferData(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices);
         static void drawIndexedGeometry(const Transform& transform, const std::vector<Triangle>& triangles, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, const std::vector<Attribute>& attributesDataOffsets);
+        static ElementBufferObjectType createElementBufferObject();
+        static void destroyElementBufferObject(ElementBufferObjectType elementBufferObject);
         static void swap();
         static void endFrame();
         static void destroy();
