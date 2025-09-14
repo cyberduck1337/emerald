@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Assertion.hpp"
+#include "Entity.hpp"
 #include "Components/Transform.hpp"
 #include "Scene.hpp"
 #include "fmt/format.h"
@@ -10,8 +11,6 @@
 
 namespace Emerald
 {
-    using Entity = entt::entity;
-
     class EntityUtils
     {
     public:

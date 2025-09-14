@@ -35,6 +35,7 @@ add_executable(Emerald
         Source/Reflection.cpp
         Source/Scene.hpp
         Source/Scene.cpp
+        Source/Entity.hpp
         Source/EntityUtils.hpp
         Source/EntityUtils.cpp
         Source/Systems/SystemBase.hpp
