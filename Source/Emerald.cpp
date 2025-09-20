@@ -4,7 +4,6 @@
 #include "Log.hpp"
 #include "Reflection.hpp"
 #include "Scene.hpp"
-#include "Systems/CameraUpdateSystem.hpp"
 #include "Systems/FreeCameraControlSystem.hpp"
 
 int main(int argc, char** argv)
