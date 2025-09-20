@@ -1,5 +1,7 @@
+#include "Components/CameraComponent.hpp"
 #include "Components/FreeCameraComponent.hpp"
 #include "Components/StaticMeshComponent.hpp"
+#include "Components/Transform.hpp"
 #include "Gfx.hpp"
 #include "Log.hpp"
 #include "Reflection.hpp"
@@ -67,12 +69,18 @@ int main(int argc, char** argv)
             auto view = world.view<const Emerald::Transform, const Emerald::StaticMeshComponent>();
 
             Emerald::Entity renderCamera = world.getCameraObject();
+            const Emerald::Transform& renderCameraTransform = Emerald::EntityUtils::getComponent<Emerald::Transform>(renderCamera);
             Emerald::CameraComponent& renderCameraComponent = Emerald::EntityUtils::getComponent<Emerald::CameraComponent>(renderCamera);
             for (auto&&[entity, transform, staticMesh] : view.each())
             {
                 Emerald::Gfx::ShaderType shaderProgram = Emerald::Gfx::fallbackShader();
                 Emerald::Gfx::drawIndexedGeometry(transform.model(), renderCameraComponent.m_view, renderCameraComponent.m_projection, staticMesh.indicesCount(), shaderProgram, staticMesh.vbo(), staticMesh.vao(), staticMesh.ebo());
             }
+
+            const glm::uvec2 windowSize = Emerald::Gfx::getWindowSize();
+
+            renderCameraComponent.m_projection = glm::perspective(glm::radians(renderCameraComponent.m_fov), static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), renderCameraComponent.m_near, renderCameraComponent.m_far);
+            renderCameraComponent.m_view = glm::lookAt(renderCameraTransform.m_position, renderCameraTransform.m_position + renderCameraTransform.front(), renderCameraTransform.up());
 
             Emerald::Gfx::endFrame();
         }
