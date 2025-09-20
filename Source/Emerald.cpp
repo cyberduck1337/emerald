@@ -57,7 +57,7 @@ int main(int argc, char** argv)
             {15, 12, 13}, {13, 14, 15}, // right
             {17, 16, 19}, {18, 17, 19}, // top
             {21, 22, 20}, {23, 20, 22}, // bottom
-       };
+        };
         Emerald::EntityUtils::addComponent<Emerald::StaticMeshComponent>(cube1, m_vertices, m_triangles);
 
         while (!Emerald::Gfx::windowShouldClose())
