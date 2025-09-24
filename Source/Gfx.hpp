@@ -25,6 +25,7 @@ namespace Emerald
         using VertexBufferObjectType = uint32_t;
         using VertexArrayObjectType = uint32_t;
         using ElementBufferObjectType = uint32_t;
+        using Texture2dObjectType = uint32_t;
 
         struct Vertex
         {
@@ -74,6 +75,30 @@ namespace Emerald
             Type type;
             uintptr_t offset;
             bool aligned;
+        };
+
+        class Texture2d final
+        {
+        public:
+            Texture2d(uint32_t width, uint32_t height, uint32_t channels, Texture2dObjectType id) noexcept;
+            
+            [[nodiscard]]
+            uint32_t width() const noexcept;
+
+            [[nodiscard]]
+            uint32_t height() const noexcept;
+
+            [[nodiscard]]
+            uint32_t channels() const noexcept;
+
+            [[nodiscard]]
+            Texture2dObjectType id() const noexcept;
+
+        private:
+            uint32_t m_width;
+            uint32_t m_height;
+            uint32_t m_channels;
+            Texture2dObjectType m_textureId;
         };
 
         static void initialize(const std::string& title, uint32_t width, uint32_t height);
