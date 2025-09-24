@@ -98,6 +98,30 @@ namespace Emerald
         m_triangles.clear();
     }
 
+    Gfx::Texture2d::Texture2d(uint32_t width, uint32_t height, uint32_t channels, Texture2dObjectType id) noexcept : m_width(width), m_height(height), m_channels(channels), m_textureId(id)
+    {
+    }
+
+    uint32_t Gfx::Texture2d::width() const noexcept
+    {
+        return m_width;
+    }
+
+    uint32_t Gfx::Texture2d::height() const noexcept
+    {
+        return m_height;
+    }
+
+    uint32_t Gfx::Texture2d::channels() const noexcept
+    {
+        return m_channels;
+    }
+
+    Gfx::Texture2dObjectType Gfx::Texture2d::id() const noexcept
+    {
+        return m_textureId;
+    }
+
     void Gfx::initialize(const std::string& title, uint32_t width, uint32_t height)
     {
         EMERALD_VERIFY_THROW(glfwInit() == GLFW_TRUE, std::runtime_error, "Failed to inistalize GLFW");
@@ -303,6 +327,19 @@ namespace Emerald
         GL_COMMAND(glDeleteVertexArrays, 1, &elementBufferObject);
     }
 
+    Gfx::Texture2dObjectType Gfx::createTexture2dObject()
+    {
+        Gfx::Texture2dObjectType texture2dObject{};
+        GL_COMMAND(glGenTextures, 1, &texture2dObject);
+
+        return texture2dObject;
+    }
+
+    void Gfx::destroyTexture2dObject(Texture2dObjectType texture2dObject)
+    {
+        GL_COMMAND(glDeleteTextures, 1, &texture2dObject);
+    }
+
     void Gfx::upload(VertexBufferObjectType vertexBufferObject, const std::vector<Vertex>& vertices, ElementBufferObjectType elementBufferObject, const std::vector<Triangle>& triangles)
     {
         GL_COMMAND(glBindBuffer, GL_ARRAY_BUFFER, vertexBufferObject);
@@ -310,6 +347,20 @@ namespace Emerald
 
         GL_COMMAND(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
         GL_COMMAND(glBufferData, GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(std::vector<Triangle>::value_type), triangles.data(), GL_STATIC_DRAW);
+    }
+
+    void Gfx::upload(Texture2dObjectType texture2dObject, const uint32_t width, const uint32_t height, const std::vector<uint8_t>& data)
+    {
+        GL_COMMAND(glBindTexture, GL_TEXTURE_2D, texture2dObject);
+
+        GL_COMMAND(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        GL_COMMAND(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        GL_COMMAND(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        GL_COMMAND(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        GL_COMMAND(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.data());
+        GL_COMMAND(glGenerateMipmap, GL_TEXTURE_2D);
     }
 
     void Gfx::drawIndexedGeometry(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection, size_t indexCount, ShaderType shaderProgram, VertexBufferObjectType vertexBufferObject, VertexArrayObjectType vertexArrayObject, ElementBufferObjectType elementBufferObject)
