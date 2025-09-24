@@ -25,6 +25,7 @@ add_executable(Emerald
         Source/Emerald.cpp
 
         Source/Assertion.hpp
+        Source/AssetManager.hpp
         Source/Input.hpp
         Source/Input.cpp
         Source/Gfx.hpp

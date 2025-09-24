@@ -1,3 +1,4 @@
+#include "AssetManager.hpp"
 #include "Components/CameraComponent.hpp"
 #include "Components/FreeCameraComponent.hpp"
 #include "Components/StaticMeshComponent.hpp"
@@ -13,6 +14,7 @@ int main(int argc, char** argv)
     Emerald::Log::initialize();
     Emerald::Reflection::initialize();
     Emerald::Gfx::initialize("Emerald", 1280, 720);
+    Emerald::AssetManager::initialize();
     Emerald::Gfx::setClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     {
@@ -88,6 +90,7 @@ int main(int argc, char** argv)
         Emerald::Log::info("Goodbye, Emerald!");
     }
 
+    Emerald::AssetManager::destroy();
     Emerald::Gfx::destroy();
     Emerald::Reflection::destroy();
     Emerald::Log::destroy();
