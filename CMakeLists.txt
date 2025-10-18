@@ -52,6 +52,8 @@ add_executable(Emerald
         Source/Components/NameComponent.cpp
         Source/Components/Transform.hpp
         Source/Components/Transform.cpp
+        Source/Components/TextureComponent.hpp
+        Source/Components/TextureComponent.cpp
         Source/Components/StaticMeshComponent.hpp
         Source/Components/StaticMeshComponent.cpp
 )
